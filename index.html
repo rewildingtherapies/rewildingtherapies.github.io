@@ -185,5 +185,76 @@ a { color: var(--moss); }
     <span>The Outdoor Practice · <a href="https://rewildingtherapies.com" target="_blank" rel="noopener">rewildingtherapies.com</a></span>
   </footer>
 </div>
+<!-- Add to home screen prompt -->
+<style>
+.a2hs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; background: var(--surface); border-top: 1px solid var(--line); box-shadow: 0 -6px 20px rgba(0,0,0,0.10);
+  padding: 14px max(16px, env(safe-area-inset-right, 0px)) calc(14px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.a2hs-in { max-width: 680px; margin: 0 auto; display: flex; gap: 12px; align-items: flex-start; }
+.a2hs-icon { width: 44px; height: 44px; border-radius: 10px; flex: none; box-shadow: 0 1px 2px rgba(0,0,0,0.15); }
+.a2hs-text { flex: 1; min-width: 0; font-size: 0.88rem; line-height: 1.5; color: var(--ink); }
+.a2hs-text b { display: block; font-family: var(--display); font-size: 1.2rem; font-weight: 600; color: var(--forest); line-height: 1.2; margin-bottom: 2px; }
+.a2hs-text small { display: block; color: var(--muted); font-size: 0.8rem; margin-top: 4px; }
+.a2hs-share { display: inline-block; width: 16px; height: 16px; vertical-align: -3px; color: var(--forest); }
+.a2hs-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.a2hs-btn { border-radius: 999px; padding: 8px 16px; font: inherit; font-size: 0.86rem; font-weight: 500; cursor: pointer; border: 1px solid var(--line); background: transparent; color: var(--ink); }
+.a2hs-btn.go { background: var(--forest); color: var(--bg); border-color: var(--forest); }
+</style>
+<script>
+(function () {
+  var NAME = "The Toolkit";
+  var KEY = "top-a2hs-later-" + NAME;
+  var standalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true;
+  if (standalone) return;
+  try { if (Date.now() < +(localStorage.getItem(KEY) || 0)) return; } catch (e) {}
+  var ua = navigator.userAgent || "";
+  var inApp = /Instagram|FBAN|FBAV|FB_IAB|LinkedInApp|TikTok|Snapchat/i.test(ua);
+  var ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  var android = /Android/i.test(ua);
+  var icon = (document.querySelector('link[rel="apple-touch-icon"]') || {}).href || "";
+  var shareSvg = '<svg class="a2hs-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/></svg>';
+  var deferred = null, el = null, spacer = null;
+
+  function later() {
+    try { localStorage.setItem(KEY, String(Date.now() + 14 * 24 * 3600 * 1000)); } catch (e) {}
+    hide();
+  }
+  function hide() { if (el) el.remove(); if (spacer) spacer.remove(); el = spacer = null; }
+  function show(html, actions) {
+    hide();
+    el = document.createElement("aside");
+    el.className = "a2hs"; el.setAttribute("aria-label", "Add to home screen");
+    el.innerHTML = '<div class="a2hs-in">' + (icon ? '<img class="a2hs-icon" src="' + icon + '" alt="">' : "") +
+      '<div class="a2hs-text">' + html + '<div class="a2hs-actions">' + actions + '<button class="a2hs-btn" data-a2hs="later">Not now</button></div></div></div>';
+    document.body.appendChild(el);
+    spacer = document.createElement("div");
+    spacer.style.height = (el.offsetHeight + 16) + "px";
+    document.body.appendChild(spacer);
+    el.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-a2hs]"); if (!b) return;
+      if (b.dataset.a2hs === "later") later();
+      if (b.dataset.a2hs === "install" && deferred) {
+        deferred.prompt();
+        deferred.userChoice.then(function (c) { if (c && c.outcome === "accepted") hide(); deferred = null; });
+      }
+    });
+  }
+
+  if (inApp) {
+    show("<b>Open in your browser to save " + NAME + "</b>This app can't be saved from inside Instagram or Facebook. Tap the menu (⋯ or ⋮) and choose <strong>Open in browser</strong>, or <strong>Open in Safari</strong>.", "");
+  } else if (ios) {
+    show("<b>Add " + NAME + " to your home screen</b>Tap " + shareSvg + " <strong>Share</strong>, then <strong>Add to Home Screen</strong>. It opens like an app." +
+      "<small>Do this before you start, then always open it from the icon. Your entries stay with the icon.</small>", "");
+  } else if (android) {
+    show("<b>Add " + NAME + " to your home screen</b>Tap the <strong>⋮</strong> menu, then <strong>Install app</strong> or <strong>Add to Home screen</strong>. It opens like an app.", "");
+  }
+
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault(); deferred = e;
+    try { if (Date.now() < +(localStorage.getItem(KEY) || 0)) return; } catch (err) {}
+    show("<b>Install " + NAME + "</b>Add it to your home screen and it opens like an app.", '<button class="a2hs-btn go" data-a2hs="install">Install app</button>');
+  });
+  window.addEventListener("appinstalled", hide);
+})();
+</script>
 </body>
 </html>
