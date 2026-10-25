@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Outdoor Practice Toolkit</title>
+<meta name="theme-color" content="#1a3a2a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Toolkit">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<meta name="description" content="Free tools for time outside from The Outdoor Practice: a dream journal, a sit spot journal and a weather guide. Take what you need.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: a short shelf of tools. Header, three tool rows, then printables, community and how to save. */
+:root {
+  --bg: #f5f0e8;
+  --surface: #fbf8f2;
+  --ink: #26302a;
+  --muted: #6b7068;
+  --line: #ddd5c7;
+  --forest: #1a3a2a;
+  --moss: #4f6b42;
+  --ember: #c4622a;
+  --moss-soft: rgba(79, 107, 66, 0.10);
+  --focus: #c4622a;
+  --display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  --body: "IBM Plex Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121915; --surface: #19221c; --ink: #e6e0d4; --muted: #9ca296; --line: #2d3a31;
+    --forest: #d3e2cb; --moss: #8fae7d; --ember: #e08a5a; --moss-soft: rgba(143, 174, 125, 0.12); --focus: #e08a5a;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-top: calc(24px + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; }
+h1, h2, h3 { font-family: var(--display); color: var(--forest); font-weight: 600; text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: 2.6rem; font-weight: 500; }
+h2 { font-size: 1.6rem; font-weight: 500; }
+p { margin: 0; }
+a { color: var(--moss); }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
+
+.brand { display: flex; align-items: center; gap: 10px; color: var(--forest); }
+.brand svg { width: 30px; height: 30px; flex: none; }
+.eyebrow { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--forest); }
+.head { display: flex; flex-direction: column; gap: 12px; }
+.tagline { font-family: var(--display); font-style: italic; font-size: 1.2rem; color: var(--ember); }
+.intro { color: var(--muted); max-width: 52ch; }
+
+.tools { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+.tool {
+  display: grid; grid-template-columns: 64px 1fr auto; gap: 16px; align-items: center;
+  padding: 18px 4px; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit;
+}
+.tool:hover { background: var(--moss-soft); }
+.tool img { width: 64px; height: 64px; border-radius: 15px; display: block; background: var(--moss-soft); box-shadow: 0 1px 2px rgba(0,0,0,0.12); }
+.tool-main { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.tool-name { font-family: var(--display); font-size: 1.45rem; font-weight: 600; color: var(--forest); line-height: 1.15; }
+.tool-desc { font-size: 0.9rem; color: var(--muted); }
+.open { font-size: 0.85rem; font-weight: 600; color: var(--forest); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; white-space: nowrap; background: var(--surface); }
+.tool:hover .open { border-color: var(--moss); }
+
+.block { display: flex; flex-direction: column; gap: 10px; }
+.label { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--forest); }
+.btn { align-self: flex-start; display: inline-flex; border-radius: 999px; padding: 10px 20px; background: var(--forest); color: var(--bg); text-decoration: none; font-weight: 500; font-size: 0.92rem; }
+.btn.ghost { background: var(--surface); color: var(--forest); border: 1px solid var(--line); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.card { border: 1px solid var(--line); border-radius: 14px; padding: 18px; background: var(--surface); display: flex; flex-direction: column; gap: 10px; }
+.steps { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 4px; font-size: 0.9rem; }
+.steps li::marker { color: var(--ember); font-weight: 600; }
+.note { font-size: 0.86rem; color: var(--muted); border-left: 3px solid var(--ember); padding-left: 12px; }
+.foot { font-size: 0.8rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 4px; }
+
+@media (max-width: 520px) {
+  h1 { font-size: 2.15rem; }
+  .tool { grid-template-columns: 56px 1fr; }
+  .tool img { width: 56px; height: 56px; border-radius: 13px; }
+  .open { grid-column: 2; justify-self: start; }
+  .two { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="head">
+    <div class="brand">
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="45" fill="none" stroke="var(--moss)" stroke-width="3.5"/>
+        <g stroke="currentColor" stroke-width="3.5" fill="none">
+          <line x1="50" y1="12" x2="50" y2="88"/>
+          <polyline points="32.5,47.5 50,30 67.5,47.5"/>
+          <polyline points="36,59 50,45 64,59"/>
+        </g>
+      </svg>
+      <span class="eyebrow">The Outdoor Practice</span>
+    </div>
+    <h1>The Toolkit</h1>
+    <p class="tagline">Free tools for time outside. Take what you need.</p>
+    <p class="intro">Small, simple tools for noticing the land, listening to your dreams and reading the sky. They work on any phone or computer, and your entries stay on your device.</p>
+  </header>
+
+  <nav class="tools" aria-label="Tools">
+    <a class="tool" href="/Sit-spot/">
+      <img src="/Sit-spot/icon-192.png" alt="" width="64" height="64">
+      <span class="tool-main">
+        <span class="tool-name">Sit Spot Journal</span>
+        <span class="tool-desc">Same place, different day. Log what you notice, track your visitors, and watch the year turn. Includes the Four Shields.</span>
+      </span>
+      <span class="open">Open</span>
+    </a>
+    <a class="tool" href="/dreamjournal/">
+      <img src="/dreamjournal/icon-192.png" alt="" width="64" height="64">
+      <span class="tool-main">
+        <span class="tool-name">Dream Journal</span>
+        <span class="tool-desc">Capture dreams on waking, reflect later, and see which symbols keep returning. With a short guide to Jungian dream work.</span>
+      </span>
+      <span class="open">Open</span>
+    </a>
+    <a class="tool" href="/Weather-tool/">
+      <img src="/Weather-tool/icon-192.png" alt="" width="64" height="64">
+      <span class="tool-main">
+        <span class="tool-name">Weather Wise</span>
+        <span class="tool-desc">Check the forecast for your spot and get a clear go or no-go, with tips for every kind of weather and neurodivergent awareness.</span>
+      </span>
+      <span class="open">Open</span>
+    </a>
+  </nav>
+
+  <div class="two">
+    <section class="card">
+      <span class="label">Prefer pen and paper?</span>
+      <p>Printable and fillable versions of the journals, ready for A4, iPad or reMarkable.</p>
+      <a class="btn ghost" href="https://payhip.com/TheOutdoorPractice" target="_blank" rel="noopener">Visit the shop</a>
+    </section>
+    <section class="card">
+      <span class="label">Come as you are</span>
+      <p>Join The Outdoor Practice community on Skool. Share what you're noticing, and find others doing the same.</p>
+      <a class="btn" href="https://www.skool.com/outdoor-psychotherapy-3052/about" target="_blank" rel="noopener">Join the community</a>
+    </section>
+  </div>
+
+  <section class="block">
+    <h2>Save it to your phone</h2>
+    <div class="two">
+      <div class="card">
+        <span class="label">iPhone</span>
+        <ol class="steps">
+          <li>Open this page in Safari.</li>
+          <li>Tap the Share button.</li>
+          <li>Tap Add to Home Screen.</li>
+          <li>Tap Add.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <span class="label">Android</span>
+        <ol class="steps">
+          <li>Open this page in Chrome.</li>
+          <li>Tap the three dots, top right.</li>
+          <li>Tap Add to Home screen or Install app.</li>
+          <li>Tap Add or Install.</li>
+        </ol>
+      </div>
+    </div>
+    <p class="note">Already saved one of the tools to your iPhone home screen? Keep opening that tool from its own icon. iPhone keeps each icon's entries separate, so the same tool opened from here would start empty.</p>
+  </section>
+
+  <footer class="foot">
+    <span>Your entries are saved on your own device. Nothing is sent to us. Export a copy now and again from inside each tool.</span>
+    <span>The Outdoor Practice · <a href="https://rewildingtherapies.com" target="_blank" rel="noopener">rewildingtherapies.com</a></span>
+  </footer>
+</div>
+</body>
+</html>
